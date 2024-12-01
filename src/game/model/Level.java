@@ -13,6 +13,8 @@ public class Level extends JPanel implements ActionListener {
     private Timer timer;
     private java.util.List<EnemyOne> enemyOneList;
     private boolean endGame;
+    private java.util.List<Stars> stars;
+
 
     public Level() {
 
@@ -29,6 +31,7 @@ public class Level extends JPanel implements ActionListener {
         timer = new Timer(5, this);
         timer.start();
         inicializarInimigos();
+        inicializarStars();
         this.endGame = true;
     }
 
@@ -40,17 +43,34 @@ public class Level extends JPanel implements ActionListener {
             int x = (int) (Math.random() * 8000 + 1024);
             int y = (int) (Math.random() * 650 + 30);
             enemyOneList.add(new EnemyOne(x,y));
-
         }
     }
 
-    @Override
+    public void inicializarStars() {
+        int coordenadas[] = new int[200];
+        stars = new ArrayList<>();
+
+        for (int i = 0; i < coordenadas.length; i++) {
+            int x = (int) (Math.random() * 1050 + 1024);
+            int y = (int) (Math.random() * 768 + 0);
+            stars.add(new Stars(x,y));
+        }
+    }
+
+
+        @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
         if (endGame == true){
             super.paint(g);
             g2d.drawImage(fundo, 0, 0, getWidth(), getHeight(), null);
+
+            for (Stars stars : stars) {
+                stars.load();
+                g2d.drawImage(stars.getImage(), stars.getX(), stars.getY(), this);
+            }
+
             g2d.drawImage(player.getImg(), player.getX(), player.getY(), this);
 
             java.util.List<Tiro> tiros = player.getTiros();
@@ -75,6 +95,16 @@ public class Level extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.move();
+
+        for (int p = 0; p < stars.size(); p++) {
+            Stars on = stars.get(p);
+            if (on.isVisible()){
+                on.update();
+            }else
+                stars.remove(p);
+
+        }
+
         java.util.List<Tiro> tiros = player.getTiros();
         for (int i = 0; i < tiros.size(); i++){
 
