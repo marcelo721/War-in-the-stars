@@ -7,31 +7,33 @@ import java.util.Objects;
 public class EnemyOne {
 
     private Image image;
-    private int x,y;
+    private int x, y;
     private int largura, altura;
     private boolean isVisible;
 
-    //private static final int LARGURA = 938;
-    private static  int VELOCIDADE = 4;
+    private static int VELOCIDADE = 10;
 
-    public EnemyOne(int x, int y){
+    public EnemyOne(int x, int y) {
         this.x = x;
         this.y = y;
         isVisible = true;
     }
 
-    public void load(){
+    public void load() {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/enemyOne.png")));
-         image = icon.getImage();
+        image = icon.getImage();
 
-         this.largura = image.getWidth(null);
-         this.altura = image.getHeight(null);
+        this.largura = image.getWidth(null);
+        this.altura = image.getHeight(null);
     }
 
-    public void update(){
+    public void update() {
         this.x -= VELOCIDADE;
-//        if (this.x > LARGURA)
-//            isVisible = false;
+
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, largura, altura);
     }
 
     public static int getVELOCIDADE() {
@@ -64,5 +66,9 @@ public class EnemyOne {
 
     public Image getImage() {
         return image;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

@@ -14,10 +14,12 @@ public class Player {
     private int altura, largura;
     private Image img;
     private List<Tiro> tiros;
+    private boolean isVisible;
 
     public Player() {
         this.x = 100;
         this.y = 100;
+        this.isVisible = true;
 
         tiros = new ArrayList<>();
     }
@@ -56,6 +58,10 @@ public class Player {
         }
     }
 
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,largura,altura);
+    }
+
     public void release(KeyEvent e) {
         int codigo = e.getKeyCode();
 
@@ -92,5 +98,13 @@ public class Player {
 
     public List<Tiro> getTiros() {
         return tiros;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

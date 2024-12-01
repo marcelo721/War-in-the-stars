@@ -12,6 +12,7 @@ public class Level extends JPanel implements ActionListener {
     private Player player;
     private Timer timer;
     private java.util.List<EnemyOne> enemyOneList;
+    private boolean endGame;
 
     public Level() {
 
@@ -28,6 +29,7 @@ public class Level extends JPanel implements ActionListener {
         timer = new Timer(5, this);
         timer.start();
         inicializarInimigos();
+        this.endGame = true;
     }
 
     public void inicializarInimigos(){
@@ -44,22 +46,30 @@ public class Level extends JPanel implements ActionListener {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(fundo, 0, 0, getWidth(), getHeight(), null);
-        g2d.drawImage(player.getImg(), player.getX(), player.getY(), this);
 
-        java.util.List<Tiro> tiros = player.getTiros();
-        for (Tiro tiro : tiros) {
-            tiro.load();
-            g2d.drawImage(tiro.getImage(), tiro.getX(), tiro.getY(), this);
+        if (endGame == true){
+            super.paint(g);
+            g2d.drawImage(fundo, 0, 0, getWidth(), getHeight(), null);
+            g2d.drawImage(player.getImg(), player.getX(), player.getY(), this);
+
+            java.util.List<Tiro> tiros = player.getTiros();
+            for (Tiro tiro : tiros) {
+                tiro.load();
+                g2d.drawImage(tiro.getImage(), tiro.getX(), tiro.getY(), this);
+            }
+
+            for (EnemyOne in : enemyOneList) {
+                in.load();
+                g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
+            }
+            g.dispose();
+        }else {
+            ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/gameOver.png")));
+            g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
+
         }
 
-        for (EnemyOne in : enemyOneList) {
-            in.load();
-            g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
-        }
-        g.dispose();
     }
 
     @Override
@@ -85,7 +95,38 @@ public class Level extends JPanel implements ActionListener {
                 enemyOneList.remove(j);
             }
         }
+        checarColisoes();
         repaint();
+    }
+
+    public void checarColisoes(){
+        Rectangle formaNave = player.getBounds();
+        Rectangle formaEnemyOne;
+        Rectangle formaTiro;
+
+        for (int i = 0; i < enemyOneList.size(); i++) {
+            EnemyOne tempEnemyOne = enemyOneList.get(i);
+            formaEnemyOne = tempEnemyOne.getBounds();
+            if (formaNave.intersects(formaEnemyOne)){
+                player.setVisible(false);
+                tempEnemyOne.setVisible(false);
+                endGame = false;
+            }
+        }
+
+        java.util.List<Tiro> tiros = player.getTiros();
+        for (Tiro tiro : tiros) {
+            formaTiro = tiro.getBounds();
+            for(int o = 0; o < enemyOneList.size(); o++){
+                EnemyOne tempEnemyOne = enemyOneList.get(o);
+                formaEnemyOne = tempEnemyOne.getBounds();
+                if (formaTiro.intersects(formaEnemyOne)){
+                    tempEnemyOne.setVisible(false);
+                    tiro.setVisible(false);
+                }
+            }
+        }
+
     }
 
     private class KeyAdapter implements KeyListener{

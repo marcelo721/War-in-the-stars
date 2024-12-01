@@ -34,6 +34,10 @@ public class Tiro {
             isVisible = false;
     }
 
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,largura,altura);
+    }
+
     public static int getVELOCIDADE() {
         return VELOCIDADE;
     }
@@ -64,5 +68,9 @@ public class Tiro {
 
     public Image getImage() {
         return image;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }
