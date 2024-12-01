@@ -2,26 +2,46 @@ package game.model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Player {
+public class Player implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (isTutbo=  true) {
+            turbo();
+            isTutbo = false;
+        }
+
+        if (isTutbo == false){
+            load();
+        }
+    }
 
     private int x, y;
     private int dx, dy;
     private int altura, largura;
     private Image img;
     private List<Tiro> tiros;
-    private boolean isVisible;
+    private boolean isVisible, isTutbo;
+    private Timer timer;
 
     public Player() {
         this.x = 100;
         this.y = 100;
         this.isVisible = true;
+        this.isTutbo = false;
 
         tiros = new ArrayList<>();
+
+        timer = new Timer(5000, this);
+        timer.start();
     }
 
     public void load() {
@@ -56,6 +76,9 @@ public class Player {
         if (codigo == KeyEvent.VK_RIGHT) {
             dx = 3;
         }
+        if (codigo == KeyEvent.VK_SPACE) {
+            turbo();
+        }
     }
 
     public Rectangle getBounds(){
@@ -66,7 +89,7 @@ public class Player {
         int codigo = e.getKeyCode();
 
 
-        if (codigo == KeyEvent.VK_SPACE) {
+        if (codigo == KeyEvent.VK_W) {
             tirosSimples();
         }
 
@@ -83,6 +106,14 @@ public class Player {
             dx = 0;
         }
     }
+
+    public void turbo(){
+        isTutbo = true;
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/player2.png")));
+        img = icon.getImage();
+
+    }
+
 
     public int getX() {
         return x;
