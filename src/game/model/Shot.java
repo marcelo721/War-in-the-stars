@@ -4,17 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Tiro {
+public class Shot {
 
     private Image image;
     private int x,y;
-    private int largura, altura;
+    private int width, height;
     private boolean isVisible;
 
-    private static final int LARGURA = 938;
-    private static  int VELOCIDADE = 4;
+    private static final int WIDTH = 938;
+    private static  int HEIGHT = 4;
 
-    public Tiro(int x, int y){
+    public Shot(int x, int y){
         this.x = x;
         this.y = y;
         isVisible = true;
@@ -24,26 +24,26 @@ public class Tiro {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/tiro.png")));
          image = icon.getImage();
 
-         this.largura = image.getWidth(null);
-         this.altura = image.getHeight(null);
+         this.width = image.getWidth(null);
+         this.height = image.getHeight(null);
     }
 
     public void update(){
-        this.x += VELOCIDADE;
-        if (this.x > LARGURA)
+        this.x += HEIGHT;
+        if (this.x > WIDTH)
             isVisible = false;
     }
 
     public Rectangle getBounds(){
-        return new Rectangle(x,y,largura,altura);
+        return new Rectangle(x,y, width, height);
     }
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 
-    public static void setVELOCIDADE(int VELOCIDADE) {
-        Tiro.VELOCIDADE = VELOCIDADE;
+    public static void setHEIGHT(int HEIGHT) {
+        Shot.HEIGHT = HEIGHT;
     }
 
     public int getX() {

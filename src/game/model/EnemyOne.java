@@ -8,10 +8,9 @@ public class EnemyOne {
 
     private Image image;
     private int x, y;
-    private int largura, altura;
+    private int width, height;
     private boolean isVisible;
-
-    private static int VELOCIDADE = 10;
+    private  int speed = 10;
 
     public EnemyOne(int x, int y) {
         this.x = x;
@@ -23,25 +22,24 @@ public class EnemyOne {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/enemyOne.png")));
         image = icon.getImage();
 
-        this.largura = image.getWidth(null);
-        this.altura = image.getHeight(null);
+        this.width = image.getWidth(null);
+        this.height = image.getHeight(null);
     }
 
     public void update() {
-        this.x -= VELOCIDADE;
-
+        this.x -= speed;
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, largura, altura);
+        return new Rectangle(x, y, width, height);
     }
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
+    public  int getSpeed() {
+        return speed;
     }
 
-    public static void setVELOCIDADE(int VELOCIDADE) {
-        EnemyOne.VELOCIDADE = VELOCIDADE;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public int getX() {
@@ -71,4 +69,5 @@ public class EnemyOne {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
+
 }

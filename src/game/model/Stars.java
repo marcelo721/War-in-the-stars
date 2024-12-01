@@ -9,10 +9,10 @@ public class Stars {
 
     private Image image;
     private int x, y;
-    private int largura, altura;
+    private int width, height;
     private boolean isVisible;
 
-    private static int VELOCIDADE = 5;
+    private static int speed = 5;
 
     public Stars(int x, int y) {
         this.x = x;
@@ -24,14 +24,14 @@ public class Stars {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/stars.png")));
         image = icon.getImage();
 
-        this.largura = image.getWidth(null);
-        this.altura = image.getHeight(null);
+        this.width = image.getWidth(null);
+        this.height = image.getHeight(null);
     }
 
     public void update() {
 
         if (this.x < 0){
-            this.x += largura;
+            this.x += width;
 
             Random a = new Random();
             int m = a.nextInt(500);
@@ -41,17 +41,17 @@ public class Stars {
             int n = r.nextInt(768);
             this.y = n;
         }else
-            this.x -= VELOCIDADE;
+            this.x -= speed;
 
     }
 
 
-    public static int getVELOCIDADE() {
-        return VELOCIDADE;
+    public static int getSpeed() {
+        return speed;
     }
 
-    public static void setVELOCIDADE(int VELOCIDADE) {
-        Stars.VELOCIDADE = VELOCIDADE;
+    public static void setSpeed(int speed) {
+        Stars.speed = speed;
     }
 
     public int getX() {
