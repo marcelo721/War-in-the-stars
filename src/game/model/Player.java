@@ -35,12 +35,14 @@ public class Player implements ActionListener {
     private boolean isVisible, isTurbo;
     private Timer timer;
     private Clip clip;
+    private boolean isAlive;
 
     public Player() {
         this.x = 100;
         this.y = 100;
         this.isVisible = true;
         this.isTurbo = false;
+        this.isAlive = true;
 
         shots = new ArrayList<>();
 
@@ -49,7 +51,7 @@ public class Player implements ActionListener {
     }
 
     public void load() {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/player.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/player.png")));
         img = icon.getImage();
 
         height = img.getHeight(null);
@@ -129,21 +131,24 @@ public class Player implements ActionListener {
 
     public void turbo() {
         isTurbo = true;
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/sounds/player2.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/player2.png")));
         img = icon.getImage();
     }
 
     public void playSound() {
-        try {
-            URL url = Level.class.getResource("/game/sounds/shotSound.wav");
-            assert url != null;
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            clip = AudioSystem.getClip();
-            clip.open(audioIn);
 
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isAlive){
+            try {
+                URL url = Level.class.getResource("/game/sounds/shotSound.wav");
+                assert url != null;
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+                clip = AudioSystem.getClip();
+                clip.open(audioIn);
+
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -177,5 +182,13 @@ public class Player implements ActionListener {
 
     public void setTurbo(boolean turbo) {
         isTurbo = turbo;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 }

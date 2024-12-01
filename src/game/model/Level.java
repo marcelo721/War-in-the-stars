@@ -24,7 +24,7 @@ public class Level extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon referencia = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/background.png")));
+        ImageIcon referencia = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/background.png")));
         backGround = referencia.getImage();
 
         player = new Player();
@@ -88,8 +88,9 @@ public class Level extends JPanel implements ActionListener {
             }
             g.dispose();
         } else {
-            ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/gameOver.png")));
+            ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/gameOver.gif")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
+            stopSound();
         }
     }
 
@@ -152,8 +153,9 @@ public class Level extends JPanel implements ActionListener {
             formEnemyOne = tempEnemyOne.getBounds();
             if (formNave.intersects(formEnemyOne)) {
                 player.setVisible(false);
+                player.setAlive(false);
                 tempEnemyOne.setVisible(false);
-                endGame = true;
+                endGame = false;
             }
         }
 

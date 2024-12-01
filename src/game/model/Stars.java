@@ -21,7 +21,7 @@ public class Stars {
     }
 
     public void load() {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/stars.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.png")));
         image = icon.getImage();
 
         this.width = image.getWidth(null);

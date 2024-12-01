@@ -21,7 +21,7 @@ public class EnemyOne {
     }
 
     public void load(){
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/enemyOne.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/enemyOne.png")));
         image = icon.getImage();
 
         this.width = image.getWidth(null);
@@ -39,7 +39,7 @@ public class EnemyOne {
     }
 
     public void verifyExplosion(){
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/explosion.gif")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/explosion.gif")));
         image = icon.getImage();
 
         this.width = image.getWidth(null);
