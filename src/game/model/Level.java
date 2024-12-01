@@ -34,7 +34,6 @@ public class Level extends JPanel implements ActionListener {
         Timer timer = new Timer(10, this);
         timer.start();
         createEnemies();
-
         createStars();
         this.endGame = true;
     }
