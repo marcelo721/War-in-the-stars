@@ -1,43 +1,46 @@
 package game.model;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Level extends JPanel implements ActionListener {
 
-    private Image backGround;
-    private Player player;
-    private Timer timer;
+    private final Image backGround;
+    private final Player player;
     private java.util.List<EnemyOne> enemyOneList;
     private boolean endGame;
     private java.util.List<Stars> stars;
+    private Clip clip;
 
 
     public Level() {
-
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon referencia = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/blackground.png")));
+        ImageIcon referencia = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/background.png")));
         backGround = referencia.getImage();
 
         player = new Player();
         player.load();
         addKeyListener(new KeyAdapter());
 
-        this.timer = new Timer(10, this);
-        this.timer.start();
+        Timer timer = new Timer(10, this);
+        timer.start();
         createEnemies();
 
         createStars();
         this.endGame = true;
     }
 
-    public void createEnemies(){
-        int coordinates[] = new int[100];
+    public void createEnemies() {
+        int[] coordinates = new int[40];
         enemyOneList = new ArrayList<>();
 
         for (int i = 0; i < coordinates.length; i++) {
@@ -54,16 +57,16 @@ public class Level extends JPanel implements ActionListener {
         for (int i = 0; i < coordinates.length; i++) {
             int x = (int) (Math.random() * 1050 + 1024);
             int y = (int) (Math.random() * 768 + 0);
-            stars.add(new Stars(x,y));
+            stars.add(new Stars(x, y));
         }
     }
 
 
-        @Override
+    @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        if (endGame == true){
+        if (endGame) {
             super.paint(g);
             g2d.drawImage(backGround, 0, 0, getWidth(), getHeight(), null);
 
@@ -85,93 +88,91 @@ public class Level extends JPanel implements ActionListener {
                 g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
             }
             g.dispose();
-        }else {
-            ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/gameOver.png")));
+        } else {
+            ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/gameOver.png")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        playSound();
         player.move();
 
         if (player.isTurbo()) {
-            for (EnemyOne enemyOne : enemyOneList){
+            for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(50);
             }
         } else {
-            for (EnemyOne enemyOne : enemyOneList){
+            for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(10);
             }
         }
 
         for (int p = 0; p < stars.size(); p++) {
             Stars on = stars.get(p);
-            if (on.isVisible()){
+            if (on.isVisible()) {
                 on.update();
-            }else
+            } else
                 stars.remove(p);
 
         }
 
         java.util.List<Shot> shots = player.getShots();
-        for (int i = 0; i < shots.size(); i++){
+        for (int i = 0; i < shots.size(); i++) {
 
             Shot shot = shots.get(i);
-            if (shot.isVisible()){
+            if (shot.isVisible()) {
                 shot.update();
-            }else {
+            } else {
                 shots.remove(i);
             }
 
         }
 
-        for (int j = 0; j < enemyOneList.size(); j ++){
-            EnemyOne in = enemyOneList.get(j);
-            if (in.isVisible()){
-                in.update();
-            }else{
-                enemyOneList.remove(j);
+        for (EnemyOne enemyOne : enemyOneList) {
+            if (enemyOne.isVisible()) {
+                enemyOne.update();
+            } else {
+                enemyOne.setX(1024 + (int) (Math.random() * 500));
+                enemyOne.setY((int) (Math.random() * 768));
+                enemyOne.setVisible(true);
             }
-
         }
         checkCollisions();
         repaint();
     }
 
-    public void checkCollisions(){
-        Rectangle formaNave = player.getBounds();
+    public void checkCollisions() {
+        Rectangle formNave = player.getBounds();
         Rectangle formEnemyOne;
         Rectangle formShot;
 
         for (int i = 0; i < enemyOneList.size(); i++) {
             EnemyOne tempEnemyOne = enemyOneList.get(i);
             formEnemyOne = tempEnemyOne.getBounds();
-            if (formaNave.intersects(formEnemyOne)){
+            if (formNave.intersects(formEnemyOne)) {
                 player.setVisible(false);
                 tempEnemyOne.setVisible(false);
-                endGame = false;
+                endGame = true;
             }
         }
 
         java.util.List<Shot> shots = player.getShots();
         for (Shot shot : shots) {
             formShot = shot.getBounds();
-            for(int o = 0; o < enemyOneList.size(); o++){
+            for (int o = 0; o < enemyOneList.size(); o++) {
                 EnemyOne tempEnemyOne = enemyOneList.get(o);
                 formEnemyOne = tempEnemyOne.getBounds();
-                if (formShot.intersects(formEnemyOne)){
-                    tempEnemyOne.setVisible(false);
+                if (formShot.intersects(formEnemyOne)) {
                     shot.setVisible(false);
+                    tempEnemyOne.setVisible(false);
                 }
             }
         }
 
     }
-
-    private class KeyAdapter implements KeyListener{
-
-
+    private class KeyAdapter implements KeyListener {
         @Override
         public void keyTyped(KeyEvent ke) {
         }
@@ -186,5 +187,28 @@ public class Level extends JPanel implements ActionListener {
             player.release(ke);
         }
 
+    }
+
+    public void playSound() {
+        if (clip == null) {
+            try {
+
+                URL url = Level.class.getResource("/game/sounds/warGame.wav");
+                assert url != null;
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+                clip = AudioSystem.getClip();
+                clip.open(audioIn);
+
+
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void stopSound() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+        }
     }
 }

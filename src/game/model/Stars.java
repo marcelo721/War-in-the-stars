@@ -21,7 +21,7 @@ public class Stars {
     }
 
     public void load() {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/stars.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/stars.png")));
         image = icon.getImage();
 
         this.width = image.getWidth(null);
@@ -42,7 +42,6 @@ public class Stars {
             this.y = n;
         }else
             this.x -= speed;
-
     }
 
 

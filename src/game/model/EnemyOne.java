@@ -3,6 +3,7 @@ package game.model;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import java.util.Random;
 
 public class EnemyOne {
 
@@ -10,7 +11,8 @@ public class EnemyOne {
     private int x, y;
     private int width, height;
     private boolean isVisible;
-    private  int speed = 10;
+    private  int speed;
+
 
     public EnemyOne(int x, int y) {
         this.x = x;
@@ -18,8 +20,26 @@ public class EnemyOne {
         isVisible = true;
     }
 
-    public void load() {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/enemyOne.png")));
+    public void load(){
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/enemyOne.png")));
+        image = icon.getImage();
+
+        this.width = image.getWidth(null);
+        this.height = image.getHeight(null);
+
+        if (!isVisible) {
+            isVisible = true;
+            verifyExplosion();
+            Timer timer = new Timer(50, e -> {
+                setVisible(false);
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+
+    public void verifyExplosion(){
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/explosion.gif")));
         image = icon.getImage();
 
         this.width = image.getWidth(null);
@@ -27,7 +47,13 @@ public class EnemyOne {
     }
 
     public void update() {
-        this.x -= speed;
+        if (this.x < -width) {
+            Random random = new Random();
+            this.x = 1024 + random.nextInt(500);
+            this.y = random.nextInt(768);
+        } else {
+            this.x -= speed;
+        }
     }
 
     public Rectangle getBounds() {

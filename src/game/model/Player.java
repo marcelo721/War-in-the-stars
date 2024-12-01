@@ -1,10 +1,14 @@
 package game.model;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +22,7 @@ public class Player implements ActionListener {
             isTurbo = false;
         }
 
-        if (!isTurbo){
+        if (!isTurbo) {
             load();
         }
     }
@@ -27,9 +31,10 @@ public class Player implements ActionListener {
     private int dx, dy;
     private int height, width;
     private Image img;
-    private  List<Shot> shots;
+    private List<Shot> shots;
     private boolean isVisible, isTurbo;
     private Timer timer;
+    private Clip clip;
 
     public Player() {
         this.x = 100;
@@ -44,44 +49,59 @@ public class Player implements ActionListener {
     }
 
     public void load() {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/player.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/player.png")));
         img = icon.getImage();
 
         height = img.getHeight(null);
         width = img.getWidth(null);
     }
 
-    public void shoot(){
-        this.shots.add(new Shot(x+ width,y + (height /2)));
+    public void shoot() {
+        this.shots.add(new Shot(x + width, y + (height / 2)));
     }
 
     public void move() {
+        int screenWidth = 1024;
+        int screenHeight = 695;
+
         x += dx;
         y += dy;
+
+        if (x < 0) {
+            x = 0;
+        } else if (x + width > screenWidth) {
+            x = screenWidth - width;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y + height > screenHeight) {
+            y = screenHeight - height;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_UP) {
-            dy = -3;
+            dy = -10;
         }
         if (code == KeyEvent.VK_DOWN) {
-            dy = 3;
+            dy = 10;
         }
         if (code == KeyEvent.VK_LEFT) {
-            dx = -3;
+            dx = -15;
         }
         if (code == KeyEvent.VK_RIGHT) {
-            dx = 3;
+            dx = 10;
         }
         if (code == KeyEvent.VK_SPACE) {
             turbo();
         }
     }
 
-    public Rectangle getBounds(){
-        return new Rectangle(x,y, width, height);
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 
     public void release(KeyEvent e) {
@@ -90,6 +110,7 @@ public class Player implements ActionListener {
 
         if (code == KeyEvent.VK_W) {
             shoot();
+            playSound();
         }
 
         if (code == KeyEvent.VK_UP) {
@@ -106,13 +127,25 @@ public class Player implements ActionListener {
         }
     }
 
-    public void turbo(){
+    public void turbo() {
         isTurbo = true;
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/player2.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/sounds/player2.png")));
         img = icon.getImage();
-
     }
 
+    public void playSound() {
+        try {
+            URL url = Level.class.getResource("/game/sounds/shotSound.wav");
+            assert url != null;
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            clip = AudioSystem.getClip();
+            clip.open(audioIn);
+
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getX() {
         return x;

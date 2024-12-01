@@ -21,7 +21,7 @@ public class Shot {
     }
 
     public void load(){
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/tiro.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/tiro.png")));
          image = icon.getImage();
 
          this.width = image.getWidth(null);
