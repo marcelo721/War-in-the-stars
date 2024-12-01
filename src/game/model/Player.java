@@ -3,6 +3,8 @@ package game.model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Player {
@@ -11,10 +13,13 @@ public class Player {
     private int dx, dy;
     private int altura, largura;
     private Image img;
+    private List<Tiro> tiros;
 
     public Player() {
         this.x = 100;
         this.y = 100;
+
+        tiros = new ArrayList<>();
     }
 
     public void load() {
@@ -23,6 +28,10 @@ public class Player {
 
         altura = img.getHeight(null);
         largura = img.getWidth(null);
+    }
+
+    public void tirosSimples(){
+        this.tiros.add(new Tiro(x+largura,y + (altura/2)));
     }
 
     public void move() {
@@ -50,6 +59,11 @@ public class Player {
     public void release(KeyEvent e) {
         int codigo = e.getKeyCode();
 
+
+        if (codigo == KeyEvent.VK_SPACE) {
+            tirosSimples();
+        }
+
         if (codigo == KeyEvent.VK_UP) {
             dy = 0;
         }
@@ -76,4 +90,7 @@ public class Player {
         return img;
     }
 
+    public List<Tiro> getTiros() {
+        return tiros;
+    }
 }

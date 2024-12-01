@@ -4,24 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Tiro {
+public class EnemyOne {
 
     private Image image;
     private int x,y;
     private int largura, altura;
     private boolean isVisible;
 
-    private static final int LARGURA = 938;
+    //private static final int LARGURA = 938;
     private static  int VELOCIDADE = 4;
 
-    public Tiro(int x, int y){
+    public EnemyOne(int x, int y){
         this.x = x;
         this.y = y;
         isVisible = true;
     }
 
     public void load(){
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/tiro.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/res/enemyOne.png")));
          image = icon.getImage();
 
          this.largura = image.getWidth(null);
@@ -29,9 +29,9 @@ public class Tiro {
     }
 
     public void update(){
-        this.x += VELOCIDADE;
-        if (this.x > LARGURA)
-            isVisible = false;
+        this.x -= VELOCIDADE;
+//        if (this.x > LARGURA)
+//            isVisible = false;
     }
 
     public static int getVELOCIDADE() {
@@ -39,7 +39,7 @@ public class Tiro {
     }
 
     public static void setVELOCIDADE(int VELOCIDADE) {
-        Tiro.VELOCIDADE = VELOCIDADE;
+        EnemyOne.VELOCIDADE = VELOCIDADE;
     }
 
     public int getX() {
