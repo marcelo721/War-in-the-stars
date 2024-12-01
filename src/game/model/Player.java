@@ -63,4 +63,17 @@ public class Player {
             dx = 0;
         }
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
 }
