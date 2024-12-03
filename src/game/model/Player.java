@@ -31,11 +31,13 @@ public class Player implements ActionListener {
     private int dx, dy;
     private int height, width;
     private Image img;
-    private List<Shot> shots;
+    private final List<Shot> shots;
     private boolean isVisible, isTurbo;
     private Timer timer;
     private Clip clip;
     private boolean isAlive;
+    private int life;
+
 
     public Player() {
         this.x = 100;
@@ -43,6 +45,7 @@ public class Player implements ActionListener {
         this.isVisible = true;
         this.isTurbo = false;
         this.isAlive = true;
+        this.life = 500;
 
         shots = new ArrayList<>();
 
@@ -56,6 +59,7 @@ public class Player implements ActionListener {
 
         height = img.getHeight(null);
         width = img.getWidth(null);
+
     }
 
     public void shoot() {
@@ -137,7 +141,7 @@ public class Player implements ActionListener {
 
     public void playSound() {
 
-        if (isAlive){
+        if (isAlive) {
             try {
                 URL url = Level.class.getResource("/game/sounds/shotSound.wav");
                 assert url != null;
@@ -190,5 +194,13 @@ public class Player implements ActionListener {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
     }
 }

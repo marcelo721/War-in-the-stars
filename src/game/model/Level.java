@@ -18,7 +18,7 @@ public class Level extends JPanel implements ActionListener {
     private boolean endGame;
     private java.util.List<Stars> stars;
     private Clip clip;
-
+    private int cont = 0;
 
     public Level() {
         setFocusable(true);
@@ -39,7 +39,7 @@ public class Level extends JPanel implements ActionListener {
     }
 
     public void createEnemies() {
-        int[] coordinates = new int[40];
+        int[] coordinates = new int[50];
         enemyOneList = new ArrayList<>();
 
         for (int i = 0; i < coordinates.length; i++) {
@@ -86,8 +86,16 @@ public class Level extends JPanel implements ActionListener {
                 in.load();
                 g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
             }
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 20));
+            g2d.drawString("Vidas: " + player.getLife(), 10, 30);
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 20));
+            g2d.drawString("inimigos abatidos: " + cont, 10, 50);
             g.dispose();
-        } else {
+        } else{
             ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/gameOver.gif")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
             stopSound();
@@ -115,7 +123,6 @@ public class Level extends JPanel implements ActionListener {
                 on.update();
             } else
                 stars.remove(p);
-
         }
 
         java.util.List<Shot> shots = player.getShots();
@@ -127,7 +134,6 @@ public class Level extends JPanel implements ActionListener {
             } else {
                 shots.remove(i);
             }
-
         }
 
         for (EnemyOne enemyOne : enemyOneList) {
@@ -143,6 +149,7 @@ public class Level extends JPanel implements ActionListener {
         repaint();
     }
 
+
     public void checkCollisions() {
         Rectangle formNave = player.getBounds();
         Rectangle formEnemyOne;
@@ -151,27 +158,36 @@ public class Level extends JPanel implements ActionListener {
         for (int i = 0; i < enemyOneList.size(); i++) {
             EnemyOne tempEnemyOne = enemyOneList.get(i);
             formEnemyOne = tempEnemyOne.getBounds();
-            if (formNave.intersects(formEnemyOne)) {
+
+            if (formNave.intersects(formEnemyOne) && player.getLife() > 0) {
+                tempEnemyOne.setVisible(false);
+                player.setLife(player.getLife() - 1);
+                enemyOneList.remove(i);
+
+            }else if(player.getLife() == 0){
                 player.setVisible(false);
                 player.setAlive(false);
-                tempEnemyOne.setVisible(false);
                 endGame = false;
             }
         }
 
         java.util.List<Shot> shots = player.getShots();
-        for (Shot shot : shots) {
-            formShot = shot.getBounds();
+        for (int i = 0; i < shots.size(); i++) {
+            formShot = shots.get(i).getBounds();
+
             for (int o = 0; o < enemyOneList.size(); o++) {
                 EnemyOne tempEnemyOne = enemyOneList.get(o);
                 formEnemyOne = tempEnemyOne.getBounds();
-                if (formShot.intersects(formEnemyOne)) {
-                    shot.setVisible(false);
+
+
+                if (formShot.intersects(formEnemyOne) && shots.size() > 1) {
+                    shots.get(i).setVisible(false);
                     tempEnemyOne.setVisible(false);
+                    shots.remove(i);
+                    cont++;
                 }
             }
         }
-
     }
     private class KeyAdapter implements KeyListener {
         @Override

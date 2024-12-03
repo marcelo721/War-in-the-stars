@@ -2,15 +2,26 @@ package game.model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.Random;
 
-public class Stars {
+public class Stars implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (isTurbo) {
+            turbo();
+        }else {
+            load();
+        }
+    }
 
     private Image image;
     private int x, y;
     private int width, height;
     private boolean isVisible;
+    private boolean isTurbo;
 
     private static int speed = 5;
 
@@ -20,6 +31,10 @@ public class Stars {
         isVisible = true;
     }
 
+    public void turbo() {
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/starsTurbo.png")));
+        image = icon.getImage();
+    }
     public void load() {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.png")));
         image = icon.getImage();
@@ -76,6 +91,15 @@ public class Stars {
     public Image getImage() {
         return image;
     }
+
+    public boolean isTurbo() {
+        return isTurbo;
+    }
+
+    public void setTurbo(boolean turbo) {
+        isTurbo = turbo;
+    }
+
 
     public void setVisible(boolean visible) {
         isVisible = visible;

@@ -46,6 +46,7 @@ public class EnemyOne {
         this.height = image.getHeight(null);
     }
 
+
     public void update() {
         if (this.x < -width) {
             Random random = new Random();
@@ -95,5 +96,6 @@ public class EnemyOne {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
+
 
 }
