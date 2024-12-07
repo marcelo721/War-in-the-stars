@@ -1,4 +1,4 @@
-package game.model;
+package game.model.levelOne;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,7 +16,6 @@ public class Level extends JPanel implements ActionListener {
     private final Player player;
     private java.util.List<EnemyOne> enemyOneList;
     private boolean endGame;
-    private java.util.List<Stars> stars;
     private Clip clip;
     private int cont = 0;
 
@@ -24,8 +23,8 @@ public class Level extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon referencia = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/background.png")));
-        backGround = referencia.getImage();
+        ImageIcon reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.gif")));
+        backGround = reference.getImage();
 
         player = new Player();
         player.load();
@@ -34,7 +33,6 @@ public class Level extends JPanel implements ActionListener {
         Timer timer = new Timer(10, this);
         timer.start();
         createEnemies();
-        createStars();
         this.endGame = true;
     }
 
@@ -49,18 +47,6 @@ public class Level extends JPanel implements ActionListener {
         }
     }
 
-    public void createStars() {
-        int[] coordinates = new int[300];
-        stars = new ArrayList<>();
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int x = (int) (Math.random() * 1050 + 1024);
-            int y = (int) (Math.random() * 768 + 0);
-            stars.add(new Stars(x, y));
-        }
-    }
-
-
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -68,11 +54,6 @@ public class Level extends JPanel implements ActionListener {
         if (endGame) {
             super.paint(g);
             g2d.drawImage(backGround, 0, 0, getWidth(), getHeight(), null);
-
-            for (Stars stars : stars) {
-                stars.load();
-                g2d.drawImage(stars.getImage(), stars.getX(), stars.getY(), this);
-            }
 
             g2d.drawImage(player.getImg(), player.getX(), player.getY(), this);
 
@@ -115,14 +96,6 @@ public class Level extends JPanel implements ActionListener {
             for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(10);
             }
-        }
-
-        for (int p = 0; p < stars.size(); p++) {
-            Stars on = stars.get(p);
-            if (on.isVisible()) {
-                on.update();
-            } else
-                stars.remove(p);
         }
 
         java.util.List<Shot> shots = player.getShots();

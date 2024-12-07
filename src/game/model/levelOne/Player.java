@@ -1,4 +1,4 @@
-package game.model;
+package game.model.levelOne;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -20,11 +20,8 @@ public class Player implements ActionListener {
         if (isTurbo) {
             turbo();
             isTurbo = false;
-        }
-
-        if (!isTurbo) {
+        }else
             load();
-        }
     }
 
     private int x, y;
@@ -45,7 +42,7 @@ public class Player implements ActionListener {
         this.isVisible = true;
         this.isTurbo = false;
         this.isAlive = true;
-        this.life = 500;
+        this.life = 5;
 
         shots = new ArrayList<>();
 

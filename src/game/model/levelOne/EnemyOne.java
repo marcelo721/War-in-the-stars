@@ -1,4 +1,4 @@
-package game.model;
+package game.model.levelOne;
 
 import javax.swing.*;
 import java.awt.*;
