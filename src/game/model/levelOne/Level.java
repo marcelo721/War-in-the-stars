@@ -18,6 +18,7 @@ public class Level extends JPanel implements ActionListener {
     private boolean endGame;
     private Clip clip;
     private int cont = 0;
+    private java.util.List<EnemyTwo> enemytwoList;
 
     public Level() {
         setFocusable(true);
@@ -33,17 +34,29 @@ public class Level extends JPanel implements ActionListener {
         Timer timer = new Timer(10, this);
         timer.start();
         createEnemies();
+        createEnemiesTwo();
         this.endGame = true;
     }
 
     public void createEnemies() {
-        int[] coordinates = new int[50];
+        int[] coordinates = new int[40];
         enemyOneList = new ArrayList<>();
 
         for (int i = 0; i < coordinates.length; i++) {
             int x = (int) (Math.random() * 8000 + 1024);
             int y = (int) (Math.random() * 650 + 30);
             enemyOneList.add(new EnemyOne(x,y));
+        }
+    }
+
+    public void createEnemiesTwo() {
+        int[] coordinates = new int[100];
+        enemytwoList = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemytwoList.add(new EnemyTwo(x,y));
         }
     }
 
@@ -54,7 +67,6 @@ public class Level extends JPanel implements ActionListener {
         if (endGame) {
             super.paint(g);
             g2d.drawImage(backGround, 0, 0, getWidth(), getHeight(), null);
-
             g2d.drawImage(player.getImg(), player.getX(), player.getY(), this);
 
             java.util.List<Shot> shots = player.getShots();
@@ -64,6 +76,11 @@ public class Level extends JPanel implements ActionListener {
             }
 
             for (EnemyOne in : enemyOneList) {
+                in.load();
+                g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
+            }
+
+            for (EnemyTwo in : enemytwoList) {
                 in.load();
                 g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
             }
@@ -87,19 +104,26 @@ public class Level extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         playSound();
         player.move();
+        System.out.println(enemyOneList.size());
 
         if (player.isTurbo()) {
             for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(50);
             }
+            for (EnemyTwo enemytwo : enemytwoList) {
+                enemytwo.setSpeed(50);
+            }
         } else {
             for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(10);
             }
+            for (EnemyTwo enemytwo : enemytwoList) {
+                enemytwo.setSpeed(10);
+            }
         }
 
         java.util.List<Shot> shots = player.getShots();
-        for (int i = 0; i < shots.size(); i++) {
+        for (int i = shots.size() - 1; i >= 0; i--) {
 
             Shot shot = shots.get(i);
             if (shot.isVisible()) {
@@ -109,26 +133,40 @@ public class Level extends JPanel implements ActionListener {
             }
         }
 
-        for (EnemyOne enemyOne : enemyOneList) {
-            if (enemyOne.isVisible()) {
-                enemyOne.update();
-            } else {
-                enemyOne.setX(1024 + (int) (Math.random() * 500));
-                enemyOne.setY((int) (Math.random() * 768));
-                enemyOne.setVisible(true);
+
+        if (cont < 10){
+            for (EnemyOne enemyOne : enemyOneList) {
+                if (enemyOne.isVisible()) {
+                    enemyOne.update();
+                } else {
+                    enemyOne.setX(1024 + (int) (Math.random() * 500));
+                    enemyOne.setY((int) (Math.random() * 768));
+                    enemyOne.setVisible(true);
+                }
+            }
+        }else {
+            enemyOneList.clear();
+
+            for (EnemyTwo enemytwo : enemytwoList) {
+                if (enemytwo.isVisible()) {
+                    enemytwo.update();
+                } else {
+                    enemytwo.setX(1024 + (int) (Math.random() * 500));
+                    enemytwo.setY((int) (Math.random() * 768));
+                    enemytwo.setVisible(true);
+                }
             }
         }
         checkCollisions();
         repaint();
     }
 
-
     public void checkCollisions() {
         Rectangle formNave = player.getBounds();
         Rectangle formEnemyOne;
         Rectangle formShot;
 
-        for (int i = 0; i < enemyOneList.size(); i++) {
+        for (int i = enemyOneList.size() - 1; i > 1; i--) {
             EnemyOne tempEnemyOne = enemyOneList.get(i);
             formEnemyOne = tempEnemyOne.getBounds();
 
@@ -144,20 +182,51 @@ public class Level extends JPanel implements ActionListener {
             }
         }
 
+        for (int i = enemytwoList.size() - 1; i > 1; i--) {
+            EnemyTwo tempEnemy = enemytwoList.get(i);
+            formEnemyOne = tempEnemy.getBounds();
+
+            if (formNave.intersects(formEnemyOne) && player.getLife() > 0) {
+                tempEnemy.setVisible(false);
+                player.setLife(player.getLife() - 2);
+                enemytwoList.remove(i);
+
+            }else if(player.getLife() == 0){
+                player.setVisible(false);
+                player.setAlive(false);
+                endGame = false;
+            }
+        }
+
         java.util.List<Shot> shots = player.getShots();
-        for (int i = 0; i < shots.size(); i++) {
+        for (int i = shots.size() - 1; i >= 0; i--) {
             formShot = shots.get(i).getBounds();
 
-            for (int o = 0; o < enemyOneList.size(); o++) {
-                EnemyOne tempEnemyOne = enemyOneList.get(o);
+            for (EnemyOne tempEnemyOne : enemyOneList) {
                 formEnemyOne = tempEnemyOne.getBounds();
 
-
-                if (formShot.intersects(formEnemyOne) && shots.size() > 1) {
+                if (formShot.intersects(formEnemyOne)) {
                     shots.get(i).setVisible(false);
                     tempEnemyOne.setVisible(false);
                     shots.remove(i);
                     cont++;
+                    break;
+                }
+            }
+        }
+
+        for (int i = shots.size() - 1; i >= 0; i--) {
+            formShot = shots.get(i).getBounds();
+
+            for (EnemyTwo tempEnemy : enemytwoList) {
+                formEnemyOne = tempEnemy.getBounds();
+
+                if (formShot.intersects(formEnemyOne)) {
+                    shots.get(i).setVisible(false);
+                    tempEnemy.setVisible(false);
+                    shots.remove(i);
+                    cont++;
+                    break;
                 }
             }
         }

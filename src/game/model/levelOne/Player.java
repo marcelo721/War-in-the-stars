@@ -20,8 +20,9 @@ public class Player implements ActionListener {
         if (isTurbo) {
             turbo();
             isTurbo = false;
-        }else
-            load();
+        }
+
+        load();
     }
 
     private int x, y;
@@ -42,7 +43,7 @@ public class Player implements ActionListener {
         this.isVisible = true;
         this.isTurbo = false;
         this.isAlive = true;
-        this.life = 5;
+        this.life = 500000;
 
         shots = new ArrayList<>();
 
@@ -132,7 +133,7 @@ public class Player implements ActionListener {
 
     public void turbo() {
         isTurbo = true;
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/player2.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/playerTurbo.png")));
         img = icon.getImage();
     }
 
@@ -179,14 +180,6 @@ public class Player implements ActionListener {
 
     public boolean isTurbo() {
         return isTurbo;
-    }
-
-    public void setTurbo(boolean turbo) {
-        isTurbo = turbo;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
     }
 
     public void setAlive(boolean alive) {

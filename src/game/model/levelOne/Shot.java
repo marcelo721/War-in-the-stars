@@ -7,12 +7,13 @@ import java.util.Objects;
 public class Shot {
 
     private Image image;
-    private int x,y;
+    private  int x;
+    private  final int y;
     private int width, height;
     private boolean isVisible;
 
     private static final int WIDTH = 938;
-    private static  int HEIGHT = 4;
+    private static final int SPEED = 10;
 
     public Shot(int x, int y){
         this.x = x;
@@ -29,7 +30,7 @@ public class Shot {
     }
 
     public void update(){
-        this.x += HEIGHT;
+        this.x += SPEED;
         if (this.x > WIDTH)
             isVisible = false;
     }
@@ -38,28 +39,12 @@ public class Shot {
         return new Rectangle(x,y, width, height);
     }
 
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public static void setHEIGHT(int HEIGHT) {
-        Shot.HEIGHT = HEIGHT;
-    }
-
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public boolean isVisible() {

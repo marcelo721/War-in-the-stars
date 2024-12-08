@@ -7,17 +7,15 @@ import java.awt.event.MouseEvent;
 
 public class Button extends JButton {
 
-    private ImageIcon icon;
+    private final ImageIcon icon;
 
     public Button(ImageIcon icon, int width, int height) {
+
         this.icon = icon;
         setVisible(true);
         setOpaque(false);
         setPreferredSize(new Dimension(width, height));
         setBorder(BorderFactory.createMatteBorder(0,0,0,0,Color.WHITE));
-        if (icon == null) {
-            System.out.println("error");
-        }
 
         // Add movement effect on button hover
         addMouseListener(new MouseAdapter() {

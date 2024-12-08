@@ -6,7 +6,6 @@ import javax.swing.*;
 
 public class WarInTheStars extends JFrame {
 
-    private Level level;
     private final Menu menu;
 
     public WarInTheStars(){
@@ -23,7 +22,7 @@ public class WarInTheStars extends JFrame {
     }
 
     public void showLevel() {
-        level = new Level();
+        Level level = new Level();
         remove(menu);
         add(level);
         revalidate();

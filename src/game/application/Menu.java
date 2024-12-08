@@ -26,7 +26,6 @@ public class Menu extends JPanel implements ActionListener {
         startButton = new Button(start, 400, 200);
         startButton.addActionListener(this);
         add(startButton);
-
     }
 
     @Override
