@@ -174,7 +174,7 @@ public class Level extends JPanel implements ActionListener {
                 player.setLife(player.getLife() - 1);
                 enemyOneList.remove(i);
 
-            }else if(player.getLife() == 0){
+            }else if(player.getLife() <= 0){
                 player.setVisible(false);
                 player.setAlive(false);
                 endGame = false;
@@ -190,7 +190,7 @@ public class Level extends JPanel implements ActionListener {
                 player.setLife(player.getLife() - 2);
                 enemytwoList.remove(i);
 
-            }else if(player.getLife() == 0){
+            }else if(player.getLife() <= 0){
                 player.setVisible(false);
                 player.setAlive(false);
                 endGame = false;

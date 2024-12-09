@@ -22,7 +22,7 @@ public class Shot {
     }
 
     public void load(){
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/tiro.png")));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/shot.png")));
          image = icon.getImage();
 
          this.width = image.getWidth(null);
