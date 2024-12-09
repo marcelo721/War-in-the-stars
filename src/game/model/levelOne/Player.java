@@ -42,7 +42,7 @@ public class Player implements ActionListener {
         this.isVisible = true;
         this.isTurbo = false;
         this.isAlive = true;
-        this.life = 500000;
+        this.life = 5;
 
         shots = new ArrayList<>();
 
