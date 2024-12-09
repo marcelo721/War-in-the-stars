@@ -20,6 +20,16 @@ Get ready for a fast-paced, action-packed journey through the galaxy!
 
 ---
 
+### Main Menu
+![Main Menu](src/game/images/startGame.gif)
+![](src/game/images/start.gif)
+
+### Gameplay
+![Gameplay](imgs_readme/game.png)
+
+### Game Over
+![Game Over](src/game/images/gameOver.gif)
+
 ## 🚀 **How to Play**  
 1. **Download the Game**: Clone the repository:  
    ```bash
