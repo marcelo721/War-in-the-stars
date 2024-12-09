@@ -21,7 +21,6 @@ public class Player implements ActionListener {
             turbo();
             isTurbo = false;
         }
-
         load();
     }
 
@@ -110,7 +109,6 @@ public class Player implements ActionListener {
 
     public void release(KeyEvent e) {
         int code = e.getKeyCode();
-
 
         if (code == KeyEvent.VK_W) {
             shoot();

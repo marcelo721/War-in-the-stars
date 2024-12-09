@@ -31,8 +31,8 @@ public class EnemyTwo {
             isVisible = true;
             verifyExplosion();
             Timer timer = new Timer(50, e -> {
-                setVisible(false);
-            });
+            });                setVisible(false);
+
             timer.setRepeats(false);
             timer.start();
         }

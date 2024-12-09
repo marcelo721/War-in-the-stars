@@ -111,14 +111,14 @@ public class Level extends JPanel implements ActionListener {
                 enemyOne.setSpeed(50);
             }
             for (EnemyTwo enemytwo : enemytwoList) {
-                enemytwo.setSpeed(50);
+                enemytwo.setSpeed(40);
             }
         } else {
             for (EnemyOne enemyOne : enemyOneList) {
                 enemyOne.setSpeed(10);
             }
             for (EnemyTwo enemytwo : enemytwoList) {
-                enemytwo.setSpeed(10);
+                enemytwo.setSpeed(5);
             }
         }
 
@@ -132,7 +132,6 @@ public class Level extends JPanel implements ActionListener {
                 shots.remove(i);
             }
         }
-
 
         if (cont < 10){
             for (EnemyOne enemyOne : enemyOneList) {
