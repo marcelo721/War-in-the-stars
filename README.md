@@ -10,6 +10,10 @@ In **War in the Stars**, you are the commander of a high-tech spaceship armed wi
 Your mission? Survive unyielding waves of enemies, collect power-ups, and become the ultimate space hero.  
 Get ready for a fast-paced, action-packed journey through the galaxy!  
 
+
+## 📖 **Game stage**
+The game is currently in the alpha stage
+
 ---
 
 ## 🎮 **Features**  
