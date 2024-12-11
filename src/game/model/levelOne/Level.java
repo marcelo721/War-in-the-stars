@@ -1,5 +1,7 @@
 package game.model.levelOne;
 
+import game.archives.Utils;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -19,11 +21,14 @@ public class Level extends JPanel implements ActionListener {
     private Clip clip;
     private int cont = 0;
     private java.util.List<EnemyTwo> enemytwoList;
+    private final String maxScore;
+    private final String PATH;
 
     public Level() {
         setFocusable(true);
         setDoubleBuffered(true);
 
+        PATH = "C:\\Users\\mh047\\OneDrive\\Área de Trabalho\\game2d\\WarInTheStars\\src\\game\\archives\\MaxScore.txt";
         ImageIcon reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.gif")));
         backGround = reference.getImage();
 
@@ -36,10 +41,11 @@ public class Level extends JPanel implements ActionListener {
         createEnemies();
         createEnemiesTwo();
         this.endGame = true;
+        maxScore = Utils.readArchives(PATH);
     }
 
     public void createEnemies() {
-        int[] coordinates = new int[40];
+        int[] coordinates = new int[50];
         enemyOneList = new ArrayList<>();
 
         for (int i = 0; i < coordinates.length; i++) {
@@ -50,7 +56,7 @@ public class Level extends JPanel implements ActionListener {
     }
 
     public void createEnemiesTwo() {
-        int[] coordinates = new int[100];
+        int[] coordinates = new int[50];
         enemytwoList = new ArrayList<>();
 
         for (int i = 0; i < coordinates.length; i++) {
@@ -92,8 +98,19 @@ public class Level extends JPanel implements ActionListener {
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Arial", Font.BOLD, 20));
             g2d.drawString("inimigos abatidos: " + cont, 10, 50);
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 20));
+            g2d.drawString("recorde de inimigos abatidos : " + maxScore, 10, 70);
             g.dispose();
         } else{
+
+            int newRecord = Integer.parseInt(maxScore);
+            if (cont > newRecord){
+                String text = String.valueOf(cont);
+                Utils.writeArchives(PATH, text);
+            }
+
             ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/gameOver.gif")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
             stopSound();
@@ -104,7 +121,6 @@ public class Level extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         playSound();
         player.move();
-        System.out.println(enemyOneList.size());
 
         if (player.isTurbo()) {
             for (EnemyOne enemyOne : enemyOneList) {
@@ -115,7 +131,7 @@ public class Level extends JPanel implements ActionListener {
             }
         } else {
             for (EnemyOne enemyOne : enemyOneList) {
-                enemyOne.setSpeed(10);
+                enemyOne.setSpeed(7);
             }
             for (EnemyTwo enemytwo : enemytwoList) {
                 enemytwo.setSpeed(5);
@@ -133,7 +149,7 @@ public class Level extends JPanel implements ActionListener {
             }
         }
 
-        if (cont < 10){
+        if (cont < 25){
             for (EnemyOne enemyOne : enemyOneList) {
                 if (enemyOne.isVisible()) {
                     enemyOne.update();
