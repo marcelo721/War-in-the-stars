@@ -49,7 +49,7 @@ public class Menu extends JPanel implements ActionListener {
 
         isLoading = true;
         repaint();
-        Timer timer = new Timer(3500, e -> {
+        Timer timer = new Timer(6000, e -> {
 
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             if (parentFrame instanceof WarInTheStars) {

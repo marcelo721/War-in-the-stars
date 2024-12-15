@@ -8,6 +8,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -23,6 +24,9 @@ public class Level extends JPanel implements ActionListener {
     private java.util.List<EnemyTwo> enemytwoList;
     private final String maxScore;
     private final String PATH;
+    private Image lifeImage;
+    private Font retroFont;
+
 
     public Level() {
         setFocusable(true);
@@ -31,6 +35,9 @@ public class Level extends JPanel implements ActionListener {
         PATH = "C:\\Users\\mh047\\OneDrive\\Área de Trabalho\\game2d\\WarInTheStars\\src\\game\\archives\\MaxScore.txt";
         ImageIcon reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.gif")));
         backGround = reference.getImage();
+
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeOne.png")));
+        lifeImage = icon.getImage();
 
         player = new Player();
         player.load();
@@ -42,27 +49,14 @@ public class Level extends JPanel implements ActionListener {
         createEnemiesTwo();
         this.endGame = true;
         maxScore = Utils.readArchives(PATH);
-    }
 
-    public void createEnemies() {
-        int[] coordinates = new int[50];
-        enemyOneList = new ArrayList<>();
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int x = (int) (Math.random() * 8000 + 1024);
-            int y = (int) (Math.random() * 650 + 30);
-            enemyOneList.add(new EnemyOne(x,y));
-        }
-    }
-
-    public void createEnemiesTwo() {
-        int[] coordinates = new int[50];
-        enemytwoList = new ArrayList<>();
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int x = (int) (Math.random() * 8000 + 1024);
-            int y = (int) (Math.random() * 650 + 30);
-            enemytwoList.add(new EnemyTwo(x,y));
+        try {
+            retroFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/game/archives/fonts/PressStart2P-Regular.ttf")).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(retroFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erro ao carregar a fonte retrô!");
         }
     }
 
@@ -91,22 +85,28 @@ public class Level extends JPanel implements ActionListener {
                 g2d.drawImage(in.getImage(), in.getX(), in.getY(), this);
             }
 
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("Arial", Font.BOLD, 20));
-            g2d.drawString("Vidas: " + player.getLife(), 10, 30);
+            g2d.drawImage(lifeImage, 4, 10, this);
 
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("Arial", Font.BOLD, 20));
-            g2d.drawString("inimigos abatidos: " + cont, 10, 50);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("Arial", Font.BOLD, 20));
-            g2d.drawString("recorde de inimigos abatidos : " + maxScore, 10, 70);
-            g.dispose();
-        } else{
+
+            g2d.setColor(new Color(255, 255, 0));
+            g2d.setFont(retroFont);
+            g2d.drawString("Inimigos abatidos: " + cont, 15, 55);
+
+            g2d.setColor(new Color(0, 0, 0, 120));
+            g2d.drawString("Inimigos abatidos: " + cont, 17, 67);
+
+            g2d.setColor(new Color(0, 255, 0));
+            g2d.setFont(retroFont);
+            g2d.drawString("Recorde: " + maxScore, 15, 75);
+
+            g2d.setColor(new Color(0, 0, 0, 120));
+            g2d.drawString("Recorde: " + maxScore, 17, 87);
+        } else {
 
             int newRecord = Integer.parseInt(maxScore);
-            if (cont > newRecord){
+            if (cont > newRecord) {
                 String text = String.valueOf(cont);
                 Utils.writeArchives(PATH, text);
             }
@@ -114,6 +114,28 @@ public class Level extends JPanel implements ActionListener {
             ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/gameOver.gif")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
             stopSound();
+        }
+    }
+
+    public void createEnemies() {
+        int[] coordinates = new int[50];
+        enemyOneList = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemyOneList.add(new EnemyOne(x, y));
+        }
+    }
+
+    public void createEnemiesTwo() {
+        int[] coordinates = new int[50];
+        enemytwoList = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemytwoList.add(new EnemyTwo(x, y));
         }
     }
 
@@ -149,7 +171,7 @@ public class Level extends JPanel implements ActionListener {
             }
         }
 
-        if (cont < 25){
+        if (cont < 25) {
             for (EnemyOne enemyOne : enemyOneList) {
                 if (enemyOne.isVisible()) {
                     enemyOne.update();
@@ -159,7 +181,7 @@ public class Level extends JPanel implements ActionListener {
                     enemyOne.setVisible(true);
                 }
             }
-        }else {
+        } else {
             enemyOneList.clear();
 
             for (EnemyTwo enemytwo : enemytwoList) {
@@ -173,6 +195,7 @@ public class Level extends JPanel implements ActionListener {
             }
         }
         checkCollisions();
+        setLifeImage();
         repaint();
     }
 
@@ -190,7 +213,8 @@ public class Level extends JPanel implements ActionListener {
                 player.setLife(player.getLife() - 1);
                 enemyOneList.remove(i);
 
-            }else if(player.getLife() <= 0){
+
+            } else if (player.getLife() <= 0) {
                 player.setVisible(false);
                 player.setAlive(false);
                 endGame = false;
@@ -206,7 +230,7 @@ public class Level extends JPanel implements ActionListener {
                 player.setLife(player.getLife() - 2);
                 enemytwoList.remove(i);
 
-            }else if(player.getLife() <= 0){
+            } else if (player.getLife() <= 0) {
                 player.setVisible(false);
                 player.setAlive(false);
                 endGame = false;
@@ -246,6 +270,35 @@ public class Level extends JPanel implements ActionListener {
             }
         }
     }
+
+    private void setLifeImage() {
+        ImageIcon reference;
+        switch (player.getLife()) {
+            case 0:
+                 reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeSix.png")));
+                lifeImage = reference.getImage();
+                break;
+            case 1:
+                 reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeFive.png")));
+                lifeImage = reference.getImage();
+                break;
+            case 2:
+                reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeFor.png")));
+                lifeImage = reference.getImage();
+                break;
+
+            case 3:
+                reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeThree.png")));
+                lifeImage = reference.getImage();
+                break;
+
+            case 4:
+                reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/lifeTwo.png")));
+                lifeImage = reference.getImage();
+                break;
+        }
+    }
+
     private class KeyAdapter implements KeyListener {
         @Override
         public void keyTyped(KeyEvent ke) {
@@ -280,6 +333,7 @@ public class Level extends JPanel implements ActionListener {
             }
         }
     }
+
     public void stopSound() {
         if (clip != null && clip.isRunning()) {
             clip.stop();
