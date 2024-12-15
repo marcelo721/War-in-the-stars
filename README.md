@@ -25,8 +25,7 @@ The game is currently in the alpha stage
 ---
 
 ### Main Menu
-![Main Menu](src/game/images/startGame.gif)
-![](src/game/images/start.gif)
+![Main Menu](imgs_readme/menu.png)
 
 ### Gameplay
 ![Gameplay](imgs_readme/game.png)
