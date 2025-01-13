@@ -1,14 +1,16 @@
-package game.archives;
+package game.archives.utils;
+
+import game.archives.exceptions.ReadErrorException;
 
 import java.io.*;
 
-public class Utils {
+public class ArchiveUtils {
 
     public static String readArchives(String pathEnter) {
        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(pathEnter))){
            return bufferedReader.readLine();
        } catch (IOException e) {
-           throw new RuntimeException(e);
+           throw new ReadErrorException("Erro ao ler o arquivo");
        }
     }
 
@@ -20,7 +22,7 @@ public class Utils {
             archive.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ReadErrorException("Erro ao salvar o arquivo");
         }
 
     }

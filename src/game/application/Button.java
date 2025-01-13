@@ -17,7 +17,6 @@ public class Button extends JButton {
         setPreferredSize(new Dimension(width, height));
         setBorder(BorderFactory.createMatteBorder(0,0,0,0,Color.WHITE));
 
-        // Add movement effect on button hover
         addMouseListener(new MouseAdapter() {
 
             public void mouseEntered(MouseEvent e) {
@@ -44,7 +43,6 @@ public class Button extends JButton {
         g2d.drawRect(2, 2, getWidth() - 4, getHeight() - 4);
     }
 
-    // Move the button by a specified offset
     private void moveButton(int xOffset, int yOffset) {
         Point currentLocation = getLocation();
         setLocation(currentLocation.x + xOffset, currentLocation.y + yOffset);

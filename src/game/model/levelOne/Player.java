@@ -15,14 +15,7 @@ import java.util.Objects;
 
 public class Player implements ActionListener {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (isTurbo) {
-            turbo();
-            isTurbo = false;
-        }
-        load();
-    }
+
 
     private int x, y;
     private int dx, dy;
@@ -35,6 +28,14 @@ public class Player implements ActionListener {
     private boolean isAlive;
     private int life;
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (isTurbo) {
+            turbo();
+            isTurbo = false;
+        }
+        load();
+    }
 
     public Player() {
         this.x = 100;
@@ -84,8 +85,14 @@ public class Player implements ActionListener {
     }
 
     public void keyPressed(KeyEvent e) {
+
+
         int code = e.getKeyCode();
 
+        if (code == KeyEvent.VK_W) {
+            shoot();
+            playSound();
+        }
         if (code == KeyEvent.VK_UP) {
             dy = -10;
         }
@@ -110,10 +117,6 @@ public class Player implements ActionListener {
     public void release(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
-            shoot();
-            playSound();
-        }
 
         if (code == KeyEvent.VK_UP) {
             dy = 0;

@@ -1,6 +1,6 @@
 package game.model.levelOne;
 
-import game.archives.Utils;
+import game.archives.utils.ArchiveUtils;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -48,7 +48,7 @@ public class Level extends JPanel implements ActionListener {
         createEnemies();
         createEnemiesTwo();
         this.endGame = true;
-        maxScore = Utils.readArchives(PATH);
+        maxScore = ArchiveUtils.readArchives(PATH);
 
         try {
             retroFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/game/archives/fonts/PressStart2P-Regular.ttf")).deriveFont(12f);
@@ -92,10 +92,10 @@ public class Level extends JPanel implements ActionListener {
 
             g2d.setColor(new Color(255, 255, 0));
             g2d.setFont(retroFont);
-            g2d.drawString("Inimigos abatidos: " + cont, 15, 55);
+            g2d.drawString("enemies killed: " + cont, 15, 55);
 
             g2d.setColor(new Color(0, 0, 0, 120));
-            g2d.drawString("Inimigos abatidos: " + cont, 17, 67);
+            g2d.drawString("enemies killed: " + cont, 17, 67);
 
             g2d.setColor(new Color(0, 255, 0));
             g2d.setFont(retroFont);
@@ -108,34 +108,12 @@ public class Level extends JPanel implements ActionListener {
             int newRecord = Integer.parseInt(maxScore);
             if (cont > newRecord) {
                 String text = String.valueOf(cont);
-                Utils.writeArchives(PATH, text);
+                ArchiveUtils.writeArchives(PATH, text);
             }
 
             ImageIcon endGame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/gameOver.gif")));
             g2d.drawImage(endGame.getImage(), 0, 0, getWidth(), getHeight(), null);
             stopSound();
-        }
-    }
-
-    public void createEnemies() {
-        int[] coordinates = new int[50];
-        enemyOneList = new ArrayList<>();
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int x = (int) (Math.random() * 8000 + 1024);
-            int y = (int) (Math.random() * 650 + 30);
-            enemyOneList.add(new EnemyOne(x, y));
-        }
-    }
-
-    public void createEnemiesTwo() {
-        int[] coordinates = new int[50];
-        enemytwoList = new ArrayList<>();
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int x = (int) (Math.random() * 8000 + 1024);
-            int y = (int) (Math.random() * 650 + 30);
-            enemytwoList.add(new EnemyTwo(x, y));
         }
     }
 
@@ -171,7 +149,7 @@ public class Level extends JPanel implements ActionListener {
             }
         }
 
-        if (cont < 25) {
+        if (cont < 10) {
             for (EnemyOne enemyOne : enemyOneList) {
                 if (enemyOne.isVisible()) {
                     enemyOne.update();
@@ -197,6 +175,28 @@ public class Level extends JPanel implements ActionListener {
         checkCollisions();
         setLifeImage();
         repaint();
+    }
+
+    public void createEnemies() {
+        int[] coordinates = new int[50];
+        enemyOneList = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemyOneList.add(new EnemyOne(x, y));
+        }
+    }
+
+    public void createEnemiesTwo() {
+        int[] coordinates = new int[50];
+        enemytwoList = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemytwoList.add(new EnemyTwo(x, y));
+        }
     }
 
     public void checkCollisions() {
