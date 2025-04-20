@@ -32,7 +32,7 @@ public class Level extends JPanel implements ActionListener {
         setFocusable(true);
         setDoubleBuffered(true);
 
-        PATH = "C:\\Users\\mh047\\OneDrive\\Área de Trabalho\\game2d\\WarInTheStars\\src\\game\\archives\\MaxScore.txt";
+        PATH = "C:\\Users\\UserDC\\Desktop\\MATERIAS DE ESTUDOS E PROJETOS\\War-in-the-stars\\src\\game\\archives\\MaxScore.txt";
         ImageIcon reference = new ImageIcon(Objects.requireNonNull(getClass().getResource("/game/images/stars.gif")));
         backGround = reference.getImage();
 

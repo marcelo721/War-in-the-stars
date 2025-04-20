@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\UserDC\Desktop\MATERIAS DE ESTUDOS E PROJETOS\War-in-the-stars\out\artifacts\WarInTheStars_jar\WarInTheStars.jar</jar>
+  <outfile>C:\Users\UserDC\Desktop\MATERIAS DE ESTUDOS E PROJETOS\War-in-the-stars\Laucher4j\war.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\UserDC\Desktop\MATERIAS DE ESTUDOS E PROJETOS\War-in-the-stars\Laucher4j\img.icon.ico</icon>
+  <singleInstance>
+    <mutexName>war</mutexName>
+    <windowTitle>war</windowTitle>
+  </singleInstance>
+  <jre>
+    <path>C:\Program Files\Java\jdk-21</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>

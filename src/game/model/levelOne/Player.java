@@ -28,6 +28,7 @@ public class Player implements ActionListener {
     private boolean isAlive;
     private int life;
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isTurbo) {
@@ -85,8 +86,6 @@ public class Player implements ActionListener {
     }
 
     public void keyPressed(KeyEvent e) {
-
-
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_W) {
@@ -116,7 +115,6 @@ public class Player implements ActionListener {
 
     public void release(KeyEvent e) {
         int code = e.getKeyCode();
-
 
         if (code == KeyEvent.VK_UP) {
             dy = 0;
